@@ -303,17 +303,17 @@ window.addEventListener("resize", notifyParentHeight);
         </div>
         <div class="lead-field">
           <label for="lg-email">Work email</label>
-          <input type="email" id="lg-email" placeholder="jane@company.com" autocomplete="email"/>
+          <input type="email" id="lg-email" placeholder="jane@yourcompany.com" autocomplete="email"/>
         </div>
       </div>
       <div class="lead-row">
         <div class="lead-field">
           <label for="lg-company">Company name</label>
-          <input type="text" id="lg-company" placeholder="Acme Inc." autocomplete="organization"/>
+          <input type="text" id="lg-company" placeholder="Your Company" autocomplete="organization"/>
         </div>
         <div class="lead-field">
           <label for="lg-phone">Phone (optional)</label>
-          <input type="tel" id="lg-phone" placeholder="+1 555 000 0000" autocomplete="tel"/>
+          <input type="tel" id="lg-phone" placeholder="+1 555 222 1212" autocomplete="tel"/>
         </div>
       </div>
       <button class="lead-submit-btn" onclick="submitLeadGate()">Get My Free Score - Step 1 of 2</button>
@@ -1149,6 +1149,20 @@ async function runAudit() {
     <a href="https://calendly.com/jmarino-hitmantech/new-meeting" target="_blank" style="color:#5a706c;font-size:12px;text-decoration:none">Book a Free Consultation</a>
   </div>
   <p style="font-size:11px;color:#3d5550">&#169; 2026 CenterNorth Technologies &#183; Your LLM Scorecard &#183; All rights reserved.</p>
-</div>
+</div><script>
+// Auto-resize postMessage broadcaster
+function sendHeight() {
+  var height = document.body.scrollHeight;
+  window.parent.postMessage({ type: 'resize', height: height }, '*');
+}
+// Send on load and whenever content changes
+window.addEventListener('load', sendHeight);
+setInterval(sendHeight, 500);
+// Also send on any DOM changes
+if (window.MutationObserver) {
+  var observer = new MutationObserver(sendHeight);
+  observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+}
+</script>
 </body>
 </html>
