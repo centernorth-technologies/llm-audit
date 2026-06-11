@@ -677,7 +677,7 @@ function resetAudit() {
   setStatus("Enter your URL to find out if Claude, ChatGPT and Gemini can find and recommend your business.", "");
 }
 
-function dlPDF() {
+async function dlPDF() {
   if (!auditData) { alert("Please run an audit first."); return; }
   var d = auditData;
   if (d.overall_score >= 70) { d.suggested_tier = "smallbiz"; }
@@ -698,13 +698,28 @@ function dlPDF() {
   function nd(n){if(y+n>272){np();}}
   function hl(yy){sd(BDR);doc.setLineWidth(0.2);doc.line(L,yy,W-R,yy);}
 
+  // Preload compass image for headers
+  var compassImgEl = null;
+  try {
+    var tmpCompass = new Image(); tmpCompass.crossOrigin="anonymous";
+    tmpCompass.src = "https://www.centernorthtech.com/wp-content/uploads/2026/06/CenterNorth-Tech-Compas-logo.png";
+    await new Promise(function(res,rej){tmpCompass.onload=res;tmpCompass.onerror=rej;setTimeout(rej,5000);});
+    compassImgEl = tmpCompass;
+  } catch(e) { compassImgEl = null; }
+
   function ph(title){
     np();
-    sf(LG);doc.rect(0,0,W,14,"F");
-    sf(T);doc.rect(0,0,5,14,"F");
-    st(MID);doc.setFont("helvetica","normal");doc.setFontSize(7.5);
-    doc.text("CENTERNORTH TECHNOLOGIES - AI VISIBILITY AND MANAGEMENT REPORT",L+8,8);
+    sf(T);doc.rect(0,0,W,14,"F");
+    if(compassImgEl){try{doc.addImage(compassImgEl,"PNG",L,1,12,12);}catch(e){}}
+    st(WHT);doc.setFont("helvetica","bold");doc.setFontSize(8);
+    doc.text("CENTERNORTH TECHNOLOGIES",L+16,6);
+    doc.setFont("helvetica","normal");doc.setFontSize(7.5);
+    doc.text("AI VISIBILITY AND MANAGEMENT REPORT",L+16,11);
     doc.text(ad,W-R,8,{align:"right"});
+    // Footer line
+    sd(BDR);doc.setLineWidth(0.2);doc.line(0,283,W,283);
+    st([180,190,188]);doc.setFont("helvetica","normal");doc.setFontSize(6.5);
+    doc.text("CenterNorth Technologies · centernorthtech.com · AI Visibility and Management Report · Confidential",L,289);
     y=22;
     st(INK);doc.setFont("helvetica","bold");doc.setFontSize(15);
     doc.text(title,L,y);y+=4;hl(y);y+=8;
@@ -725,18 +740,22 @@ function dlPDF() {
   doc.setFont("helvetica","normal");doc.setFontSize(8);
   doc.text("AI VISIBILITY AND MANAGEMENT REPORT",W-R,11,{align:"right"});
 
-  // Logo area
-  doc.setFont("helvetica","bold");doc.setFontSize(22);st(INK);
-  doc.text("CENTER",L,42);
-  st(T);doc.text("NORTH",L+doc.getTextWidth("CENTER"),42);
-  doc.setFont("helvetica","normal");doc.setFontSize(10);st(MID);
-  doc.text("TECHNOLOGIES",L,50);
-  sd(T);doc.setLineWidth(0.6);doc.line(L,54,L+60,54);
-
-  // Report label
-  var covLbl=doc.splitTextToSize("AI Visibility and Management Report",CW*0.55);
+  // Logo image on cover
+  try {
+    var logoImg = new Image(); logoImg.crossOrigin="anonymous";
+    logoImg.src = "https://www.centernorthtech.com/wp-content/uploads/2026/06/CenterNorth-Technologies-logo-with-tagline.png";
+    await new Promise(function(res,rej){logoImg.onload=res;logoImg.onerror=rej;setTimeout(rej,5000);});
+    doc.addImage(logoImg,"PNG",L,24,90,28);
+  } catch(e) {
+    // Fallback text logo
+    doc.setFont("helvetica","bold");doc.setFontSize(22);st(INK);
+    doc.text("CENTER",L,38);
+    st(T);doc.text("NORTH",L+doc.getTextWidth("CENTER"),38);
+    doc.setFont("helvetica","normal");doc.setFontSize(10);st(MID);
+    doc.text("TECHNOLOGIES",L,46);
+  }
+  sd(T);doc.setLineWidth(0.6);doc.line(L,56,L+80,56);
   doc.setFont("helvetica","bold");doc.setFontSize(8);st(T);
-  var lbStyle="letter-spacing:.1em";
   doc.text("AI VISIBILITY AND MANAGEMENT REPORT",L,64);
 
   // Big title
@@ -949,24 +968,29 @@ function dlPDF() {
     {name:"Enterprise",price:"$10,000+",note:"custom · unlimited pages",col:[80,40,160],features:["Everything in Mid-Market","Full AI architecture review","Custom schema development","Dedicated account manager"],best:"Best for: Large organizations"}
   ];
   var tw3=(CW-8)/3;
+  nd(72);
   for(var iti=0;iti<3;iti++){
-    nd(52);
     var itm=implTiers[iti];
     var itx=L+iti*(tw3+4);
     var isIRec=(iti===0&&d.suggested_tier==="smallbiz")||(iti===1&&d.suggested_tier==="midmarket")||(iti===2&&d.suggested_tier==="enterprise");
-    sf(isIRec?TL:LG);doc.roundedRect(itx,y,tw3,48,2,2,"F");
-    if(isIRec){sd(T);doc.setLineWidth(0.8);doc.roundedRect(itx,y,tw3,48,2,2,"S");}
-    st(MID);doc.setFont("helvetica","bold");doc.setFontSize(7);doc.text(itm.name.toUpperCase(),itx+4,y+7);
-    st(itm.col);doc.setFontSize(13);doc.text(itm.price,itx+4,y+16);
-    st(MID);doc.setFontSize(6.5);doc.setFont("helvetica","normal");doc.text(itm.note,itx+4,y+21);
-    sd(BDR);doc.setLineWidth(0.2);doc.line(itx+2,y+24,itx+tw3-2,y+24);
+    sf(isIRec?TL:LG);doc.roundedRect(itx,y,tw3,66,2,2,"F");
+    if(isIRec){sd(T);doc.setLineWidth(0.8);doc.roundedRect(itx,y,tw3,66,2,2,"S");}
+    else{sd(BDR);doc.setLineWidth(0.3);doc.roundedRect(itx,y,tw3,66,2,2,"S");}
+    st(MID);doc.setFont("helvetica","bold");doc.setFontSize(7);doc.text(itm.name.toUpperCase(),itx+4,y+8);
+    st(itm.col);doc.setFontSize(14);doc.text(itm.price,itx+4,y+18);
+    st(MID);doc.setFontSize(6.5);doc.setFont("helvetica","normal");doc.text(itm.note,itx+4,y+24);
+    sd(BDR);doc.setLineWidth(0.2);doc.line(itx+2,y+27,itx+tw3-2,y+27);
     for(var iff=0;iff<itm.features.length;iff++){
-      sf(itm.col);doc.circle(itx+5,y+30+iff*4.5,1,"F");
-      st(INK);doc.setFontSize(7);doc.text(itm.features[iff],itx+8,y+31+iff*4.5);
+      sf(itm.col);doc.circle(itx+5,y+34+iff*5.5,1.2,"F");
+      st(INK);doc.setFontSize(7.5);
+      var feat=doc.splitTextToSize(itm.features[iff],tw3-12);
+      doc.text(feat[0],itx+9,y+35+iff*5.5);
     }
-    st(MID);doc.setFontSize(6.5);doc.text(itm.best,itx+4,y+46);
+    sd(BDR);doc.setLineWidth(0.2);doc.line(itx+2,y+58,itx+tw3-2,y+58);
+    st(INK);doc.setFont("helvetica","bold");doc.setFontSize(7);
+    doc.text(itm.best,itx+4,y+63);
   }
-  y+=54;
+  y+=72;
 
   // Management retainer
   nd(24);
@@ -988,30 +1012,40 @@ function dlPDF() {
   y+=18;
 
   ph("Next Steps with CenterNorth Technologies");
-  nd(70);
-  sf(DK);doc.roundedRect(L,y,CW,66,3,3,"F");
-  sf(T);doc.roundedRect(L,y,CW,14,3,3,"F");
-  sf(T);doc.rect(L,y+8,CW,6,"F");
+  nd(80);
+  sf(DK);doc.roundedRect(L,y,CW,76,3,3,"F");
+  sf(T);doc.roundedRect(L,y,CW,16,3,3,"F");
+  sf(T);doc.rect(L,y+10,CW,6,"F");
   st(WHT);doc.setFont("helvetica","bold");doc.setFontSize(13);
-  doc.text("Do not be a ghost in the forest.",L+CW/2,y+10.5,{align:"center"});
-  doc.setFont("helvetica","bold");doc.setFontSize(14);st(WHT);
-  doc.text("CenterNorth Technologies",L+CW/2,y+26,{align:"center"});
-  doc.setFont("helvetica","normal");doc.setFontSize(8.5);st(PAL);
-  doc.text("CenterNorth Technologies makes businesses visible, readable,",L+CW/2,y+36,{align:"center"});
-  doc.text("and actionable to every major AI agent and LLM.",L+CW/2,y+42,{align:"center"});
-  // Contact info
-  sf(T);doc.roundedRect(L+CW/2-50,y+48,100,14,2,2,"F");
+  doc.text("Do not be a ghost in the forest.",L+CW/2,y+12,{align:"center"});
+  // Compass logo on last page
+  if(compassImgEl){try{doc.addImage(compassImgEl,"PNG",L+CW/2-12,y+20,24,24);}catch(e){}}
+  // Full logo below compass
+  try{
+    var logoImg2=new Image();logoImg2.crossOrigin="anonymous";
+    logoImg2.src="https://www.centernorthtech.com/wp-content/uploads/2026/06/CenterNorth-Technologies-logo-with-tagline.png";
+    await new Promise(function(res,rej){logoImg2.onload=res;logoImg2.onerror=rej;setTimeout(rej,3000);});
+    doc.addImage(logoImg2,"PNG",L+CW/2-36,y+46,72,22);
+  }catch(e){
+    doc.setFont("helvetica","bold");doc.setFontSize(12);st(WHT);
+    doc.text("CenterNorth Technologies",L+CW/2,y+54,{align:"center"});
+  }
+  doc.setFont("helvetica","normal");doc.setFontSize(8);st(PAL);
+  doc.text("Making businesses visible, readable, and actionable to every major AI agent and LLM.",L+CW/2,y+70,{align:"center"});
+  // Contact info box
+  sf(T);doc.roundedRect(L+CW/2-55,y+82,110,16,2,2,"F");
+  nd(20);
   st(WHT);doc.setFont("helvetica","bold");doc.setFontSize(9);
-  doc.text("John Marino — AI Expert",L+CW/2,y+54,{align:"center"});
+  doc.text("John Marino — AI Expert",L+CW/2,y+89,{align:"center"});
   doc.setFont("helvetica","normal");doc.setFontSize(8);
-  doc.text("jmarino@centernorthtech.com  |  612-388-9765",L+CW/2,y+60,{align:"center"});
+  doc.text("jmarino@centernorthtech.com  |  612-388-9765",L+CW/2,y+95,{align:"center"});
 
+  // Add page numbers to all pages
   var tot=doc.getNumberOfPages();
   for(var pn=1;pn<=tot;pn++){
     doc.setPage(pn);
     doc.setFont("helvetica","normal");doc.setFontSize(7);st([61,85,80]);
-    doc.text("CenterNorth Technologies - centernorthtech.com - AI Visibility and Management Report - Confidential",L,292);
-    doc.text("Page "+pn+" of "+tot,W-R,292,{align:"right"});
+    doc.text("Page "+pn+" of "+tot,W-R,289,{align:"right"});
   }
 
   var slug=hn.replace(/[^a-z0-9]/gi,"-").toLowerCase();
