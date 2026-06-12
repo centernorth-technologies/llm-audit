@@ -658,6 +658,204 @@ function showResults(d) {
   html += "<a href='https://calendly.com/jmarino-hitmantech/new-meeting' target='_blank' class='compare-cta'>Book a Free Consultation</a>";
   html += "</div></div>";
 
+  // ── AI RECOMMENDATION SHARE PREVIEW ──
+  html += "<div style='background:#06090a;border-radius:12px;padding:24px;margin-bottom:16px'>";
+  html += "<div style='font-family:monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1c8028;margin-bottom:6px'>New Metric</div>";
+  html += "<div style='font-size:18px;font-weight:800;color:#fff;margin-bottom:8px'>AI Recommendation Share™ Preview</div>";
+  html += "<div style='font-size:12px;color:#8fa8a4;line-height:1.7;margin-bottom:18px'>";
+  html += "<em style='color:#6cbd7a;font-size:13px;font-weight:600;display:block;margin-bottom:8px'>&ldquo;SEO builds roads to your website. AI Visibility builds reputation around your website.&rdquo;</em>";
+  html += "Backlinks tell Google: this site matters. Conversations tell AI: this company is trusted. ";
+  html += "Below is an estimated snapshot of how often your business appears vs competitors when AI models answer industry-relevant questions.";
+  html += "</div>";
+
+  // Generate competitor estimates based on score
+  var recShare = d.overall_score;
+  var comp1 = Math.max(5, Math.round(recShare * 0.72));
+  var comp2 = Math.max(3, Math.round(recShare * 0.48));
+  var comp3 = Math.max(2, Math.round(recShare * 0.28));
+  var totalPts = recShare + comp1 + comp2 + comp3;
+  var yourShare = Math.round((recShare / totalPts) * 100);
+  var c1Share = Math.round((comp1 / totalPts) * 100);
+  var c2Share = Math.round((comp2 / totalPts) * 100);
+  var c3Share = Math.round((comp3 / totalPts) * 100);
+
+  html += "<div style='margin-bottom:16px'>";
+  html += "<div style='font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#5a706c;margin-bottom:10px'>AI Recommendation Share™ — Estimated</div>";
+
+  var shareRows = [
+    [d.url.replace(/^https?:\/\//,"").split("/")[0], recShare, yourShare, "#1c8028"],
+    ["Competitor A", comp1, c1Share, "#8fa8a4"],
+    ["Competitor B", comp2, c2Share, "#8fa8a4"],
+    ["Competitor C", comp3, c3Share, "#8fa8a4"]
+  ];
+  for (var sri = 0; sri < shareRows.length; sri++) {
+    var sr = shareRows[sri];
+    html += "<div style='display:flex;align-items:center;gap:12px;margin-bottom:8px'>";
+    html += "<div style='font-size:12px;font-weight:600;color:#fff;width:160px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>" + sr[0] + "</div>";
+    html += "<div style='flex:1;height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden'>";
+    html += "<div style='height:100%;width:" + sr[2] + "%;background:" + sr[3] + ";border-radius:4px'></div>";
+    html += "</div>";
+    html += "<div style='font-size:12px;font-weight:700;color:" + sr[3] + ";width:36px;text-align:right'>" + sr[2] + "%</div>";
+    html += "</div>";
+  }
+  html += "</div>";
+
+  html += "<div style='background:rgba(28,128,40,.08);border:1px solid rgba(28,128,40,.2);border-radius:8px;padding:12px 14px;font-size:11px;color:#6cbd7a;line-height:1.6;margin-bottom:16px'>";
+  html += "⚠ This is an estimated preview based on your AI Visibility Score. ";
+  html += "Full AI Recommendation Share™ tracking runs 50–500 real prompts monthly across ChatGPT, Claude, Gemini, Perplexity, and Grok — and shows exactly where you rank vs named competitors.";
+  html += "</div>";
+  html += "</div>";
+
+  // ── THREE PILLARS ──
+  html += "<div style='background:#fff;border:1px solid #d4e2df;border-radius:12px;padding:22px;margin-bottom:16px'>";
+  html += "<div style='font-family:monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1c8028;margin-bottom:6px'>What Happens After Your Audit</div>";
+  html += "<div style='font-size:18px;font-weight:800;color:#06090a;margin-bottom:4px'>AI Visibility Management™ + Agent</div>";
+  html += "<div style='font-size:12px;color:#5a706c;margin-bottom:20px;line-height:1.6'>Every client receives a dedicated AI Visibility Agent that works alongside our optimization and monitoring systems to help your business become visible, readable, and recommendable across ChatGPT, Claude, Gemini, Perplexity, Grok, and future AI platforms.</div>";
+
+  var pillars = [
+    {
+      num: "1",
+      name: "AI Visibility Optimization™",
+      desc: "We help AI systems discover and understand your business.",
+      goal: "Make your business visible and understandable to AI.",
+      color: "#1c8028",
+      features: ["AI Visibility Audit™","Schema optimization","FAQ development","Entity optimization","llms.txt management","AI-readable content improvements","Knowledge graph development"]
+    },
+    {
+      num: "2",
+      name: "AI Visibility Monitoring™",
+      desc: "We track how AI platforms perceive your company.",
+      goal: "Measure whether AI platforms are recommending your company.",
+      color: "#3480cc",
+      features: ["ChatGPT visibility reports","Claude visibility reports","Gemini visibility reports","Perplexity visibility reports","Grok visibility reports","Competitor monitoring","Recommendation tracking"]
+    },
+    {
+      num: "3",
+      name: "Dedicated AI Visibility Agent™",
+      desc: "The most valuable part of the program. Every client receives a dedicated AI Agent that works continuously to increase brand visibility.",
+      goal: "Build trust, authority, and visibility where customers and AI discover information.",
+      color: "#7c3aed",
+      features: ["Identifying relevant online discussions","Answering industry-related questions","Participating in relevant communities","Building authority signals","Identifying citation opportunities","Monitoring brand mentions","Supporting content distribution","Expanding digital visibility"]
+    }
+  ];
+
+  html += "<div style='display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px'>";
+  for (var pi2 = 0; pi2 < pillars.length; pi2++) {
+    var pil = pillars[pi2];
+    html += "<div style='border:1px solid #d4e2df;border-radius:10px;padding:16px;border-top:3px solid " + pil.color + "'>";
+    html += "<div style='display:flex;align-items:center;gap:8px;margin-bottom:10px'>";
+    html += "<div style='width:24px;height:24px;border-radius:50%;background:" + pil.color + ";color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0'>" + pil.num + "</div>";
+    html += "<div style='font-size:12px;font-weight:800;color:#06090a;line-height:1.3'>" + pil.name + "</div>";
+    html += "</div>";
+    html += "<div style='font-size:11px;color:#5a706c;margin-bottom:10px;line-height:1.55'>" + pil.desc + "</div>";
+    html += "<div style='display:flex;flex-direction:column;gap:4px;margin-bottom:10px'>";
+    for (var fi4 = 0; fi4 < pil.features.length; fi4++) {
+      html += "<div style='font-size:10px;color:#374151;display:flex;align-items:flex-start;gap:5px'><span style='color:" + pil.color + ";font-weight:700;flex-shrink:0'>✓</span>" + pil.features[fi4] + "</div>";
+    }
+    html += "</div>";
+    html += "<div style='background:#f2f6f5;border-radius:6px;padding:8px 10px;font-size:10px;color:#5a706c;border-left:3px solid " + pil.color + "'>";
+    html += "<strong style='color:#06090a'>Goal:</strong> " + pil.goal;
+    html += "</div></div>";
+  }
+  html += "</div>";
+
+  // Comparison row
+  html += "<div style='display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px'>";
+  html += "<div style='background:#f2f6f5;border-radius:8px;padding:14px'>";
+  html += "<div style='font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8fa8a4;margin-bottom:6px'>Traditional SEO</div>";
+  html += "<div style='font-size:13px;font-weight:600;color:#06090a'>You hire an SEO team to improve rankings.</div>";
+  html += "</div>";
+  html += "<div style='background:#e8f5ea;border:1px solid #bbf7d0;border-radius:8px;padding:14px'>";
+  html += "<div style='font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#1c8028;margin-bottom:6px'>AI Visibility Management™ + Agent</div>";
+  html += "<div style='font-size:13px;font-weight:600;color:#06090a'>You deploy an AI-powered workforce to improve recommendations.</div>";
+  html += "</div>";
+  html += "</div>";
+
+  html += "</div>";
+
+  // ── UPDATED PRICING with 3 pillars ──
+  html += "<div class='tier'><h3>AI Visibility Services</h3>";
+  html += "<p class='tier-sub'>Start with the free audit. Then choose your path: one-time implementation, monthly management, or the full AI-powered workforce.</p>";
+
+  // Free audit
+  html += "<div style='border:1px solid #d4e2df;border-radius:10px;padding:16px;margin-bottom:12px;background:#f2f6f5'>";
+  html += "<div style='display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px'>";
+  html += "<div><div class='tc-name'>Free AI Visibility Audit™</div><div style='font-size:22px;font-weight:800;color:#1c8028'>$0</div><div class='tc-price-note'>always free</div></div>";
+  html += "<div style='font-size:12px;color:#5a706c;max-width:280px'>Know your score before investing in fixes. Includes AI Visibility Score, 30 checks, and PDF report.</div></div>";
+  html += "<div class='tc-features' style='display:flex;flex-wrap:wrap;gap:4px 20px'>";
+  var freeFeats = ["AI Visibility Score (0-100)","30-point audit across 6 categories","Strengths & weaknesses breakdown","How Claude, ChatGPT, Gemini & Perplexity see you","Recommended action plan","PDF report download"];
+  for (var ff = 0; ff < freeFeats.length; ff++) { html += "<span style='width:calc(50% - 10px)'>" + freeFeats[ff] + "</span>"; }
+  html += "</div></div>";
+
+  // Pillar 1 heading
+  html += "<div style='font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#8fa8a4;margin:16px 0 10px'>Pillar 1 — AI Visibility Optimization™ — One-Time</div>";
+  html += "<div class='tier-grid'>";
+
+  var implTiers2 = [
+    {name:"Small Business",price:"$2,500",note:"one-time · up to 25 pages",col:"#1c8028",features:["llms.txt & robots.txt","Schema.org structured data","FAQ optimization","Sitemap & entity optimization","AI Visibility report before & after"],best:"Best for: Grade B or C"},
+    {name:"Mid-Market",price:"$5,000",note:"one-time · up to 100 pages",col:"#3480cc",features:["Everything in Small Business","Service page optimization","AI citation architecture","AI-friendly content rewrite","60-day re-audit with comparison"],best:"Best for: Grade C or D"},
+    {name:"Enterprise",price:"$10,000+",note:"custom · unlimited pages",col:"#7c3aed",features:["Everything in Mid-Market","Full AI architecture review","Custom schema development","Dedicated account manager","90-day re-audit with full comparison"],best:"Best for: Large organizations"}
+  ];
+
+  for (var ti2 = 0; ti2 < implTiers2.length; ti2++) {
+    var titem2 = implTiers2[ti2];
+    var isRec2 = (ti2===0&&d.suggested_tier==="smallbiz")||(ti2===1&&d.suggested_tier==="midmarket")||(ti2===2&&d.suggested_tier==="enterprise");
+    html += "<div class='tc" + (isRec2?" rec":"") + "'>";
+    if (isRec2) { html += "<div class='tc-badge'>RECOMMENDED FOR YOU</div>"; }
+    html += "<div class='tc-name'>" + titem2.name + "</div>";
+    html += "<div class='tc-price' style='color:" + titem2.col + "'>" + titem2.price + "</div>";
+    html += "<div class='tc-price-note'>" + titem2.note + "</div>";
+    html += "<div class='tc-divider'></div>";
+    html += "<div class='tc-features'>";
+    for (var fi5 = 0; fi5 < titem2.features.length; fi5++) { html += "<span>" + titem2.features[fi5] + "</span>"; }
+    html += "</div><div class='tc-divider'></div>";
+    html += "<div class='tc-bestfor'>" + titem2.best + "</div>";
+    html += "</div>";
+  }
+  html += "</div>";
+
+  // Pillars 1+2 — Management retainer
+  html += "<div style='font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#8fa8a4;margin:16px 0 10px'>Pillars 1 + 2 — Optimization + Monitoring — Recurring</div>";
+  var isMRec2 = d.suggested_tier==="management";
+  html += "<div style='border:" + (isMRec2?"2px solid #1c8028;background:#e8f5ea":"1px solid #d4e2df;background:#fff") + ";border-radius:10px;padding:" + (isMRec2?"24px 16px 16px":"16px") + ";position:relative;margin-bottom:12px'>";
+  if (isMRec2) { html += "<div class='tc-badge'>RECOMMENDED FOR YOU</div>"; }
+  html += "<div style='display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px'>";
+  html += "<div style='min-width:180px'><div class='tc-name'>AI Visibility Management™</div><div style='font-size:26px;font-weight:800;color:#1c8028'>$997<span style='font-size:14px;font-weight:400;color:#8fa8a4'>/mo</span></div><div class='tc-price-note'>12-month commitment</div></div>";
+  html += "<div style='flex:1;min-width:200px'><div class='tc-features' style='display:grid;grid-template-columns:1fr 1fr;gap:2px 20px'>";
+  var mgmtFeats = ["Monthly AI Visibility re-audit","Competitor monitoring","New FAQ creation monthly","Citation monitoring","Schema updates as protocols evolve","AI recommendation tracking"];
+  for (var mf = 0; mf < mgmtFeats.length; mf++) { html += "<span>" + mgmtFeats[mf] + "</span>"; }
+  html += "</div></div>";
+  html += "<div style='min-width:160px'><div class='tc-bestfor'>Pillars 1 + 2 included</div><div class='tc-bestfor-desc'>Optimization and monitoring. AI crawler standards change monthly — stay ahead automatically.</div></div>";
+  html += "</div></div>";
+
+  // Pillar 3 — Full AI Workforce
+  html += "<div style='font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#8fa8a4;margin:16px 0 10px'>All 3 Pillars — Full AI Visibility Management™ + Agent</div>";
+  html += "<div style='border:2px solid #7c3aed;background:linear-gradient(135deg,#f5f3ff,#ede9fe);border-radius:10px;padding:20px;position:relative'>";
+  html += "<div style='position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#7c3aed;color:#fff;font-size:9px;font-weight:700;padding:3px 12px;border-radius:10px;white-space:nowrap'>MOST POWERFUL</div>";
+  html += "<div style='display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px'>";
+  html += "<div style='min-width:200px'>";
+  html += "<div class='tc-name' style='color:#7c3aed'>AI Visibility Management™ + Agent</div>";
+  html += "<div style='font-size:13px;color:#5a706c;margin-bottom:8px'>$1,500 setup fee</div>";
+  html += "<div style='font-size:26px;font-weight:800;color:#7c3aed'>$1,297<span style='font-size:14px;font-weight:400;color:#8fa8a4'>/mo</span></div>";
+  html += "<div class='tc-price-note'>12-month commitment</div>";
+  html += "</div>";
+  html += "<div style='flex:1;min-width:200px'>";
+  html += "<div style='font-size:11px;font-weight:700;color:#7c3aed;margin-bottom:8px'>Everything in Management, plus:</div>";
+  html += "<div class='tc-features' style='display:grid;grid-template-columns:1fr 1fr;gap:2px 20px'>";
+  var agentFeats = ["Dedicated AI Visibility Agent™","Identifying relevant discussions","Building authority signals","Citation opportunity monitoring","Brand mention monitoring","Community participation","Content distribution support","Expanding digital visibility"];
+  for (var af = 0; af < agentFeats.length; af++) { html += "<span style='color:#374151'>" + agentFeats[af] + "</span>"; }
+  html += "</div></div>";
+  html += "<div style='min-width:160px'>";
+  html += "<div class='tc-bestfor'>Deploy an AI-powered workforce</div>";
+  html += "<div class='tc-bestfor-desc' style='margin-top:6px'>Not just reports. A dedicated agent actively building your reputation across every AI platform — every day.</div>";
+  html += "</div></div></div>";
+
+  html += "<div style='margin-top:12px;background:linear-gradient(135deg,#06090a,#0d160e);border-radius:10px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap'>";
+  html += "<div style='font-size:13px;color:#fff;font-weight:600;line-height:1.6'>Ready to go beyond visibility into <span style='color:#1c8028'>AI reputation management?</span></div>";
+  html += "<a href='https://calendly.com/jmarino-hitmantech/new-meeting' target='_blank' class='compare-cta'>Book a Free Consultation</a>";
+  html += "</div>";
+  html += "</div>";
+
   html += "<div class='actions'>";
   html += "<button class='btn-primary' onclick='dlPDF()'>Download PDF Report</button>";
   html += "<button onclick='resetAudit()'>New audit</button>";
