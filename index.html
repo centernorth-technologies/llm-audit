@@ -668,7 +668,6 @@ function showResults(d) {
   html += "Below is an estimated snapshot of how often your business appears vs competitors when AI models answer industry-relevant questions.";
   html += "</div>";
 
-  // Generate competitor estimates based on score
   var recShare = d.overall_score;
   var comp1 = Math.max(5, Math.round(recShare * 0.72));
   var comp2 = Math.max(3, Math.round(recShare * 0.48));
@@ -759,7 +758,6 @@ function showResults(d) {
   }
   html += "</div>";
 
-  // Comparison row
   html += "<div style='display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px'>";
   html += "<div style='background:#f2f6f5;border-radius:8px;padding:14px'>";
   html += "<div style='font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8fa8a4;margin-bottom:6px'>Traditional SEO</div>";
@@ -770,14 +768,12 @@ function showResults(d) {
   html += "<div style='font-size:13px;font-weight:600;color:#06090a'>You deploy an AI-powered workforce to improve recommendations.</div>";
   html += "</div>";
   html += "</div>";
-
   html += "</div>";
 
   // ── UPDATED PRICING with 3 pillars ──
   html += "<div class='tier'><h3>AI Visibility Services</h3>";
   html += "<p class='tier-sub'>Start with the free audit. Then choose your path: one-time implementation, monthly management, or the full AI-powered workforce.</p>";
 
-  // Free audit
   html += "<div style='border:1px solid #d4e2df;border-radius:10px;padding:16px;margin-bottom:12px;background:#f2f6f5'>";
   html += "<div style='display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px'>";
   html += "<div><div class='tc-name'>Free AI Visibility Audit™</div><div style='font-size:22px;font-weight:800;color:#1c8028'>$0</div><div class='tc-price-note'>always free</div></div>";
@@ -787,7 +783,6 @@ function showResults(d) {
   for (var ff = 0; ff < freeFeats.length; ff++) { html += "<span style='width:calc(50% - 10px)'>" + freeFeats[ff] + "</span>"; }
   html += "</div></div>";
 
-  // Pillar 1 heading
   html += "<div style='font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#8fa8a4;margin:16px 0 10px'>Pillar 1 — AI Visibility Optimization™ — One-Time</div>";
   html += "<div class='tier-grid'>";
 
@@ -814,7 +809,6 @@ function showResults(d) {
   }
   html += "</div>";
 
-  // Pillars 1+2 — Management retainer
   html += "<div style='font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#8fa8a4;margin:16px 0 10px'>Pillars 1 + 2 — Optimization + Monitoring — Recurring</div>";
   var isMRec2 = d.suggested_tier==="management";
   html += "<div style='border:" + (isMRec2?"2px solid #1c8028;background:#e8f5ea":"1px solid #d4e2df;background:#fff") + ";border-radius:10px;padding:" + (isMRec2?"24px 16px 16px":"16px") + ";position:relative;margin-bottom:12px'>";
@@ -828,7 +822,6 @@ function showResults(d) {
   html += "<div style='min-width:160px'><div class='tc-bestfor'>Pillars 1 + 2 included</div><div class='tc-bestfor-desc'>Optimization and monitoring. AI crawler standards change monthly — stay ahead automatically.</div></div>";
   html += "</div></div>";
 
-  // Pillar 3 — Full AI Workforce
   html += "<div style='font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#8fa8a4;margin:16px 0 10px'>All 3 Pillars — Full AI Visibility Management™ + Agent</div>";
   html += "<div style='border:2px solid #7c3aed;background:linear-gradient(135deg,#f5f3ff,#ede9fe);border-radius:10px;padding:20px;position:relative'>";
   html += "<div style='position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#7c3aed;color:#fff;font-size:9px;font-weight:700;padding:3px 12px;border-radius:10px;white-space:nowrap'>MOST POWERFUL</div>";
@@ -896,7 +889,6 @@ async function dlPDF() {
   function nd(n){if(y+n>272){np();}}
   function hl(yy){sd(BDR);doc.setLineWidth(0.2);doc.line(L,yy,W-R,yy);}
 
-  // Preload compass image for headers
   var compassImgEl = null;
   try {
     var tmpCompass = new Image(); tmpCompass.crossOrigin="anonymous";
@@ -914,7 +906,6 @@ async function dlPDF() {
     doc.setFont("helvetica","normal");doc.setFontSize(7.5);
     doc.text("AI VISIBILITY AND MANAGEMENT REPORT",L+16,11);
     doc.text(ad,W-R,8,{align:"right"});
-    // Footer line
     sd(BDR);doc.setLineWidth(0.2);doc.line(0,283,W,283);
     st([180,190,188]);doc.setFont("helvetica","normal");doc.setFontSize(6.5);
     doc.text("CenterNorth Technologies · centernorthtech.com · AI Visibility and Management Report · Confidential",L,289);
@@ -928,24 +919,19 @@ async function dlPDF() {
   var g = gr(d.overall_score);
   var ghostLabel = {A:"Agent-Ready",B:"Mostly Visible",C:"Partially Visible",D:"Low Visibility",F:"Ghost in the Forest"};
 
-  // Cover page - WHITE BACKGROUND
   sf(WHT);doc.rect(0,0,W,297,"F");
-
-  // Top green bar
   sf(T);doc.rect(0,0,W,18,"F");
   st(WHT);doc.setFont("helvetica","bold");doc.setFontSize(9);
   doc.text("CENTERNORTH TECHNOLOGIES",L,11);
   doc.setFont("helvetica","normal");doc.setFontSize(8);
   doc.text("AI VISIBILITY AND MANAGEMENT REPORT",W-R,11,{align:"right"});
 
-  // Logo image on cover
   try {
     var logoImg = new Image(); logoImg.crossOrigin="anonymous";
     logoImg.src = "https://www.centernorthtech.com/wp-content/uploads/2026/06/CenterNorth-Technologies-logo-with-tagline.png";
     await new Promise(function(res,rej){logoImg.onload=res;logoImg.onerror=rej;setTimeout(rej,5000);});
     doc.addImage(logoImg,"PNG",L,24,90,28);
   } catch(e) {
-    // Fallback text logo
     doc.setFont("helvetica","bold");doc.setFontSize(22);st(INK);
     doc.text("CENTER",L,38);
     st(T);doc.text("NORTH",L+doc.getTextWidth("CENTER"),38);
@@ -955,20 +941,14 @@ async function dlPDF() {
   sd(T);doc.setLineWidth(0.6);doc.line(L,56,L+80,56);
   doc.setFont("helvetica","bold");doc.setFontSize(8);st(T);
   doc.text("AI VISIBILITY AND MANAGEMENT REPORT",L,64);
-
-  // Big title
   doc.setFont("helvetica","bold");doc.setFontSize(28);st(INK);
   doc.text("AI Visibility and",L,80);
   doc.text("Management Report",L,92);
-
-  // Site and date
   sd(BDR);doc.setLineWidth(0.3);doc.line(L,98,W-R,98);
   doc.setFont("helvetica","normal");doc.setFontSize(10);st(MID);
   doc.text(hn,L,106);
   doc.setFontSize(9);st([180,190,188]);
   doc.text("Audit date: "+ad,L,113);
-
-  // Score box - green
   sf(T);doc.roundedRect(L,122,CW,44,3,3,"F");
   st([180,230,180]);doc.setFont("helvetica","normal");doc.setFontSize(8);
   doc.text("AI VISIBILITY SCORE — GRADE "+g+": "+ghostLabel[g],L+6,132);
@@ -978,8 +958,6 @@ async function dlPDF() {
   doc.setFontSize(14);doc.text("/100",L+6+sw+2,155);
   st([180,230,180]);doc.setFont("helvetica","normal");doc.setFontSize(8);
   doc.text(d.checks_passed+" of "+d.checks_total+" checks  |  "+d.critical_issues+" critical issues  |  "+d.pages_crawled+" pages analysed",L+6,162);
-
-  // Stats row
   var statW=(CW-8)/3;
   var stats2=[["50%+","of internet traffic is already AI agents","Cloudflare, 2026"],["60-70%","projected bot traffic share by 2027","IBM Agent Economy, 2026"],["2027","when bots outnumber human users","Cloudflare CEO, TechCrunch"]];
   for(var sti=0;sti<3;sti++){
@@ -994,15 +972,11 @@ async function dlPDF() {
     st([180,190,188]);doc.setFontSize(6);
     doc.text("Source: "+stats2[sti][2],stx+statW/2,198,{align:"center"});
   }
-
-  // CTA box
   sf(T);doc.roundedRect(L,208,CW,22,3,3,"F");
   st(WHT);doc.setFont("helvetica","bold");doc.setFontSize(11);
   doc.text("Book a Free Consultation with CenterNorth Technologies",W/2,218,{align:"center"});
   doc.setFont("helvetica","normal");doc.setFontSize(9);
   doc.text("centernorthtech.com  |  info@centernorthtech.com",W/2,225,{align:"center"});
-
-  // Footer
   sd(BDR);doc.setLineWidth(0.2);doc.line(L,285,W-R,285);
   st([180,190,188]);doc.setFont("helvetica","normal");doc.setFontSize(7);
   doc.text("CenterNorth Technologies - centernorthtech.com - AI Visibility and Management Report - Confidential",L,291);
@@ -1145,21 +1119,16 @@ async function dlPDF() {
   nd(12);
   st(MID);doc.setFont("helvetica","normal");doc.setFontSize(9);
   doc.text("Start with the free audit. Then choose implementation or ongoing management.",L,y);y+=10;
-
-  // Free audit row
   nd(20);
   sf(LG);doc.roundedRect(L,y,CW,16,2,2,"F");
   st(T);doc.setFont("helvetica","bold");doc.setFontSize(9);doc.text("FREE AI VISIBILITY AUDIT",L+6,y+7);
   st(MID);doc.setFont("helvetica","normal");doc.setFontSize(8);doc.text("$0 — always free — AI Visibility Score, 30 checks, PDF report",L+6,y+13);
   y+=22;
-
-  // Implementation heading
   nd(8);
   sf(T);doc.roundedRect(L,y,CW,7,1,1,"F");
   st(WHT);doc.setFont("helvetica","bold");doc.setFontSize(8);
   doc.text("AI VISIBILITY IMPLEMENTATION — ONE-TIME",L+4,y+4.5);
   y+=11;
-
   var implTiers = [
     {name:"Small Business",price:"$2,500",note:"one-time · up to 25 pages",col:T,features:["llms.txt & robots.txt","Schema.org structured data","FAQ optimization","Sitemap & entity optimization"],best:"Best for: Grade B or C"},
     {name:"Mid-Market",price:"$5,000",note:"one-time · up to 100 pages",col:BLU,features:["Everything in Small Business","Service page optimization","AI citation architecture","AI content rewrite"],best:"Best for: Grade C or D"},
@@ -1189,8 +1158,6 @@ async function dlPDF() {
     doc.text(itm.best,itx+4,y+63);
   }
   y+=72;
-
-  // Management retainer
   nd(24);
   var isMRec=d.suggested_tier==="management";
   sf(isMRec?TL:LG);doc.roundedRect(L,y,CW,20,2,2,"F");
@@ -1201,8 +1168,6 @@ async function dlPDF() {
   st(MID);doc.setFontSize(7);doc.setFont("helvetica","normal");
   doc.text("Monthly audit · Competitor monitoring · FAQ creation · Citation tracking · Schema updates · AI recommendation tracking",L+55,y+14);
   y+=26;
-
-  // CTA
   nd(14);
   sf(TL);doc.roundedRect(L,y,CW,12,2,2,"F");
   st(DKTEAL);doc.setFont("helvetica","bold");doc.setFontSize(9);
@@ -1216,9 +1181,7 @@ async function dlPDF() {
   sf(T);doc.rect(L,y+10,CW,6,"F");
   st(WHT);doc.setFont("helvetica","bold");doc.setFontSize(13);
   doc.text("Do not be a ghost in the forest.",L+CW/2,y+12,{align:"center"});
-  // Compass logo on last page
   if(compassImgEl){try{doc.addImage(compassImgEl,"PNG",L+CW/2-12,y+20,24,24);}catch(e){}}
-  // Full logo below compass
   try{
     var logoImg2=new Image();logoImg2.crossOrigin="anonymous";
     logoImg2.src="https://www.centernorthtech.com/wp-content/uploads/2026/06/CenterNorth-Technologies-logo-with-tagline.png";
@@ -1230,7 +1193,6 @@ async function dlPDF() {
   }
   doc.setFont("helvetica","normal");doc.setFontSize(8);st(PAL);
   doc.text("Making businesses visible, readable, and actionable to every major AI agent and LLM.",L+CW/2,y+70,{align:"center"});
-  // Contact info box
   sf(T);doc.roundedRect(L+CW/2-55,y+82,110,16,2,2,"F");
   nd(20);
   st(WHT);doc.setFont("helvetica","bold");doc.setFontSize(9);
@@ -1238,7 +1200,6 @@ async function dlPDF() {
   doc.setFont("helvetica","normal");doc.setFontSize(8);
   doc.text("jmarino@centernorthtech.com  |  612-388-9765",L+CW/2,y+95,{align:"center"});
 
-  // Add page numbers to all pages
   var tot=doc.getNumberOfPages();
   for(var pn=1;pn<=tot;pn++){
     doc.setPage(pn);
@@ -1274,6 +1235,63 @@ function submitLeadGate() {
   document.getElementById("audit-tool").style.display = "block";
   setStatus("Welcome " + name + "! Enter your website URL below to run your free AI Visibility Audit.", "");
 }
+
+// ── FOLLOW-UP WORKFLOW TRIGGER ──────────────────────────────────────────────
+// Called after every successful audit. Routes through the proxy so no secrets
+// appear in browser source. Non-blocking — never interrupts the user experience.
+async function triggerFollowUpWorkflow(reportData, auditedUrl) {
+  if (!window.leadData) return; // No lead data = tool used directly, skip
+
+  var contact = {
+    name:    window.leadData.name,
+    email:   window.leadData.email,
+    company: window.leadData.company,
+    phone:   window.leadData.phone || "",
+    website: auditedUrl
+  };
+
+  var report = {
+    overallScore:  reportData.overall_score,
+    suggestedTier: reportData.suggested_tier || "",
+    scores:        {},
+    findings:      [],
+    weaknesses:    reportData.weaknesses || []
+  };
+
+  // Map category scores
+  if (reportData.categories) {
+    for (var i = 0; i < reportData.categories.length; i++) {
+      var cat = reportData.categories[i];
+      report.scores[cat.id] = { score: cat.score, max: cat.max_score };
+    }
+  }
+
+  // Collect failing / warning checks as findings for Claude to use
+  if (reportData.categories) {
+    for (var ci = 0; ci < reportData.categories.length; ci++) {
+      var checks = reportData.categories[ci].checks || [];
+      for (var cki = 0; cki < checks.length; cki++) {
+        if (checks[cki].status === "fail" || checks[cki].status === "warn") {
+          report.findings.push(checks[cki].name + ": " + checks[cki].description);
+        }
+      }
+    }
+  }
+
+  try {
+    var resp = await fetch("https://hitmantech-proxy.jmarino.workers.dev/followup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ contact: contact, report: report })
+    });
+    var result = await resp.json();
+    console.log("[CenterNorth] Follow-up sequence triggered:", JSON.stringify(result));
+  } catch (e) {
+    // Intentionally non-blocking — audit experience is unaffected
+    console.warn("[CenterNorth] Follow-up trigger error (non-fatal):", e.message);
+  }
+}
+// ────────────────────────────────────────────────────────────────────────────
 
 async function runAudit() {
   var raw = document.getElementById("url-in").value.trim();
@@ -1328,7 +1346,13 @@ async function runAudit() {
     }
     if (window._stepInterval) { clearInterval(window._stepInterval); window._stepInterval = null; }
     setStatus("AI Visibility Score: " + parsed.overall_score + "/100 - Grade " + grade(parsed.overall_score) + " - " + parsed.checks_passed + "/" + parsed.checks_total + " checks passed", "done");
+
+    // Render the report
     showResults(parsed);
+
+    // ── Trigger follow-up email sequence (non-blocking) ──
+    triggerFollowUpWorkflow(parsed, raw);
+
   } catch(e) {
     if (window._stepInterval) { clearInterval(window._stepInterval); window._stepInterval = null; }
     logError("AUDIT_FAILED", 0, raw, e.message);
@@ -1357,9 +1381,7 @@ async function runAudit() {
 function sendHeight() { var height = document.body.scrollHeight; window.parent.postMessage({ type: 'resize', height: height }, '*'); }
 window.addEventListener('load', sendHeight);
 setInterval(sendHeight, 500);
-if (window.MutationObserver) { var observer = new MutationObserver(sendHeight); observer.observe(document.body, { childList: true, subtree: true, attributes: true }); }
+if (window.MutationObserver) { var observer = new MutationObserver(sendHeight); observer.observe(document.body, { childList: true, attributes: true, subtree: true }); }
 </script>
-</body>
-</html>
 </body>
 </html>
