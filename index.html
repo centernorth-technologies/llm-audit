@@ -573,90 +573,7 @@ function showResults(d) {
     }
   ];
 
-  html += "<div class='tier'><h3>AI Visibility Services</h3>";
-  html += "<p class='tier-sub'>Start with the free audit. Then choose your path: one-time implementation or ongoing management. This is where your AI-first competitive advantage is built.</p>";
 
-  // Free audit card full width
-  var freeT = tiers[0];
-  html += "<div style='border:1px solid #d4e2df;border-radius:10px;padding:16px;margin-bottom:12px;background:#f2f6f5'>";
-  html += "<div style='display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px'>";
-  html += "<div><div class='tc-name'>" + freeT.n + "</div><div style='font-size:22px;font-weight:800;color:#1c8028'>" + freeT.p + "</div><div class='tc-price-note'>" + freeT.pnote + "</div></div>";
-  html += "<div style='font-size:12px;color:#5a706c;max-width:280px'>" + freeT.bestdesc + "</div></div>";
-  html += "<div class='tc-features' style='display:flex;flex-wrap:wrap;gap:4px 20px'>";
-  for (var fi0 = 0; fi0 < freeT.features.length; fi0++) { html += "<span style='width:calc(50% - 10px)'>" + freeT.features[fi0] + "</span>"; }
-  html += "</div></div>";
-
-  // Implementation heading
-  html += "<div style='font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#8fa8a4;margin:16px 0 10px'>AI Visibility Implementation — One-Time</div>";
-  html += "<div class='tier-grid'>";
-  for (var ti = 1; ti <= 3; ti++) {
-    var titem = tiers[ti];
-    var isRec = titem.id === d.suggested_tier;
-    html += "<div class='tc" + (isRec ? " rec" : "") + "'>";
-    if (isRec) { html += "<div class='tc-badge'>RECOMMENDED FOR YOU</div>"; }
-    html += "<div class='tc-name'>" + titem.n + "</div>";
-    html += "<div class='tc-price'>" + titem.p + "</div>";
-    html += "<div class='tc-price-note'>" + titem.pnote + "</div>";
-    html += "<div class='tc-divider'></div>";
-    html += "<div class='tc-features'>";
-    for (var fi2 = 0; fi2 < titem.features.length; fi2++) { html += "<span>" + titem.features[fi2] + "</span>"; }
-    html += "</div>";
-    html += "<div class='tc-divider'></div>";
-    html += "<div class='tc-bestfor'>" + titem.bestfor + "</div>";
-    html += "<div class='tc-bestfor-desc'>" + titem.bestdesc + "</div>";
-    if (titem.enterprise) { html += "<div class='tc-enterprise'>" + titem.enterprise + "</div>"; }
-    html += "</div>";
-  }
-  html += "</div>";
-
-  // Management retainer full width
-  var mgmt = tiers[4];
-  var isMgmtRec = d.suggested_tier === "management";
-  html += "<div style='font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#8fa8a4;margin:16px 0 10px'>AI Visibility Management — Recurring</div>";
-  html += "<div style='border:" + (isMgmtRec ? "2px solid #1c8028;background:#e8f5ea" : "1px solid #d4e2df;background:#fff") + ";border-radius:10px;padding:" + (isMgmtRec ? "24px 16px 16px" : "16px") + ";position:relative'>";
-  if (isMgmtRec) { html += "<div class='tc-badge'>RECOMMENDED FOR YOU</div>"; }
-  html += "<div style='display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px'>";
-  html += "<div style='min-width:200px'><div class='tc-name'>" + mgmt.n + "</div><div style='font-size:26px;font-weight:800;color:" + (isMgmtRec ? "#0a4a14" : "#06090a") + "'>" + mgmt.p + "</div><div class='tc-price-note'>" + mgmt.pnote + "</div></div>";
-  html += "<div style='flex:1;min-width:200px'><div class='tc-features' style='display:grid;grid-template-columns:1fr 1fr;gap:2px 20px'>";
-  for (var fi3 = 0; fi3 < mgmt.features.length; fi3++) { html += "<span>" + mgmt.features[fi3] + "</span>"; }
-  html += "</div></div>";
-  html += "<div style='min-width:180px'><div class='tc-bestfor'>" + mgmt.bestfor + "</div><div class='tc-bestfor-desc'>" + mgmt.bestdesc + "</div>";
-  if (mgmt.enterprise) { html += "<div class='tc-enterprise'>" + mgmt.enterprise + "</div>"; }
-  html += "</div></div></div>";
-  html += "</div>"; // close .tier
-
-  // Comparison table
-  html += "<div class='compare'>";
-  html += "<div class='compare-title'>Implementation vs. Management — Which is right for you?</div>";
-  html += "<p class='compare-sub'>Think of it like SEO agencies do: one-time implementation gets you visible, monthly management keeps you there. AI crawler rules evolve every month — what scores an A today can drop without warning.</p>";
-  html += "<table class='compare-table'>";
-  html += "<thead><tr>";
-  html += "<th style='text-align:left;color:#5a706c'>Your situation</th>";
-  html += "<th class='col-onetime'>Implementation<br/><span style='font-size:11px;font-weight:600'>$2,500–$10,000+</span></th>";
-  html += "<th class='col-retainer'>Management<br/><span style='font-size:11px;font-weight:600'>$997/mo</span></th>";
-  html += "</tr></thead><tbody>";
-  var compareRows = [
-    ["Need a one-time visibility fix", "yes", "maybe"],
-    ["Site changes 3+ times per year", "maybe", "yes"],
-    ["Want competitor AI monitoring", "no", "yes"],
-    ["AI crawler rules change monthly", "no", "yes"],
-    ["New LLMs emerge needing optimisation", "no", "yes"],
-    ["Score drops without site changes", "no", "yes"],
-    ["Monthly AI Visibility reporting", "no", "yes"],
-    ["Citation monitoring & tracking", "no", "yes"],
-    ["Schema updates as protocols evolve", "no", "yes"]
-  ];
-  for (var cri = 0; cri < compareRows.length; cri++) {
-    var cr = compareRows[cri];
-    var c1 = cr[1] === "yes" ? "<div class='c-yes'>&#10003;</div>" : cr[1] === "maybe" ? "<div class='c-maybe'>~</div>" : "<div class='c-no'>&#10007;</div>";
-    var c2 = cr[2] === "yes" ? "<div class='c-yes'>&#10003;</div>" : cr[2] === "maybe" ? "<div class='c-maybe'>~</div>" : "<div class='c-no'>&#10007;</div>";
-    html += "<tr><td>" + cr[0] + "</td><td>" + c1 + "</td><td>" + c2 + "</td></tr>";
-  }
-  html += "</tbody></table>";
-  html += "<div class='compare-highlight'>";
-  html += "<div class='compare-highlight-text'>The <span>$997/month AI Visibility Management</span> retainer is where your recurring revenue lives.<br/>Most clients combine a one-time implementation with ongoing management for <span>maximum ROI</span>.</div>";
-  html += "<a href='https://calendly.com/jmarino-centernorthtech/30min' target='_blank' class='compare-cta'>Book a Free Consultation</a>";
-  html += "</div></div>";
 
   // ── AI RECOMMENDATION SHARE PREVIEW ──
   html += "<div style='background:#06090a;border-radius:12px;padding:24px;margin-bottom:16px'>";
@@ -1168,6 +1085,38 @@ async function dlPDF() {
   st(MID);doc.setFontSize(7);doc.setFont("helvetica","normal");
   doc.text("Monthly audit · Competitor monitoring · FAQ creation · Citation tracking · Schema updates · AI recommendation tracking",L+55,y+14);
   y+=26;
+
+  // ── PDF: Pillar 3 — Full AI Visibility Management + Agent ──
+  nd(10);
+  sf([80,40,160]);doc.roundedRect(L,y,CW,7,1,1,"F");
+  st(WHT);doc.setFont("helvetica","bold");doc.setFontSize(8);
+  doc.text("ALL 3 PILLARS — FULL AI VISIBILITY MANAGEMENT™ + AGENT",L+4,y+4.5);
+  y+=11;
+  nd(36);
+  sf([245,240,255]);doc.roundedRect(L,y,CW,32,2,2,"F");
+  sd([80,40,160]);doc.setLineWidth(0.8);doc.roundedRect(L,y,CW,32,2,2,"S");
+  sf([80,40,160]);doc.roundedRect(L,y,4,32,2,2,"F");
+  st([80,40,160]);doc.setFont("helvetica","bold");doc.setFontSize(7);
+  doc.text("AI VISIBILITY MANAGEMENT™ + AGENT",L+7,y+7);
+  doc.setFontSize(7);st(MID);doc.setFont("helvetica","normal");
+  doc.text("$1,500 setup fee",L+7,y+12);
+  st([80,40,160]);doc.setFont("helvetica","bold");doc.setFontSize(14);
+  doc.text("$1,297/mo",L+7,y+20);
+  st(MID);doc.setFont("helvetica","normal");doc.setFontSize(6.5);
+  doc.text("12-month commitment",L+7,y+25);
+  var agentFeatsP=["Dedicated AI Visibility Agent™","Identifying relevant discussions","Building authority signals","Citation opportunity monitoring","Brand mention monitoring","Community participation","Content distribution support","Expanding digital visibility"];
+  var afCol=Math.ceil(agentFeatsP.length/2);
+  for(var afpi=0;afpi<agentFeatsP.length;afpi++){
+    var afpx=afpi<afCol?L+CW*0.38:L+CW*0.68;
+    var afpy=y+7+(afpi%afCol)*4;
+    sf([80,40,160]);doc.circle(afpx,afpy-1,1,"F");
+    st(INK);doc.setFontSize(7);doc.setFont("helvetica","normal");
+    doc.text(agentFeatsP[afpi],afpx+3,afpy);
+  }
+  st(INK);doc.setFont("helvetica","bold");doc.setFontSize(7);
+  doc.text("Most Powerful — Deploy an AI-powered workforce",L+7,y+29);
+  y+=38;
+
   nd(14);
   sf(TL);doc.roundedRect(L,y,CW,12,2,2,"F");
   st(DKTEAL);doc.setFont("helvetica","bold");doc.setFontSize(9);
@@ -1350,8 +1299,8 @@ async function runAudit() {
     // Render the report
     showResults(parsed);
 
-    // ── Trigger follow-up email sequence (non-blocking) ──
-    triggerFollowUpWorkflow(parsed, raw);
+    // ── Trigger follow-up email sequence after 8 minute delay ──
+    setTimeout(function() { triggerFollowUpWorkflow(parsed, raw); }, 8 * 60 * 1000);
 
   } catch(e) {
     if (window._stepInterval) { clearInterval(window._stepInterval); window._stepInterval = null; }
