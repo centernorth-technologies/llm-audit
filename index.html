@@ -806,18 +806,38 @@ async function dlPDF() {
   function nd(n){if(y+n>272){np();}}
   function hl(yy){sd(BDR);doc.setLineWidth(0.2);doc.line(L,yy,W-R,yy);}
 
-  var compassImgEl = null;
-  try {
-    var tmpCompass = new Image(); tmpCompass.crossOrigin="anonymous";
-    tmpCompass.src = "https://www.centernorthtech.com/wp-content/uploads/2026/06/CenterNorth-Tech-Compas-logo.png";
-    await new Promise(function(res,rej){tmpCompass.onload=res;tmpCompass.onerror=rej;setTimeout(rej,5000);});
-    compassImgEl = tmpCompass;
-  } catch(e) { compassImgEl = null; }
+  // Preload both logos as base64 via canvas to avoid CORS issues in PDF
+  async function loadImgAsBase64(src) {
+    return new Promise(function(resolve) {
+      var img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = function() {
+        try {
+          var canvas = document.createElement("canvas");
+          canvas.width = img.naturalWidth;
+          canvas.height = img.naturalHeight;
+          var ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0);
+          resolve({ el: img, b64: canvas.toDataURL("image/png") });
+        } catch(e) { resolve(null); }
+      };
+      img.onerror = function() { resolve(null); };
+      setTimeout(function() { resolve(null); }, 8000);
+      img.src = src;
+    });
+  }
+
+  var compassResult = await loadImgAsBase64("https://www.centernorthtech.com/wp-content/uploads/2026/06/CenterNorth-Tech-Compas-logo.png");
+  var compassImgEl = compassResult ? compassResult.el : null;
+  var compassB64 = compassResult ? compassResult.b64 : null;
+
+  var logoResult = await loadImgAsBase64("https://www.centernorthtech.com/wp-content/uploads/2026/06/CenterNorth-Technologies-logo-with-tagline.png");
+  var logoB64 = logoResult ? logoResult.b64 : null;
 
   function ph(title){
     np();
     sf(T);doc.rect(0,0,W,14,"F");
-    if(compassImgEl){try{doc.addImage(compassImgEl,"PNG",L,1,12,12);}catch(e){}}
+    if(compassB64){try{doc.addImage(compassB64,"PNG",L,1,12,12);}catch(e){}}
     st(WHT);doc.setFont("helvetica","bold");doc.setFontSize(8);
     doc.text("CENTERNORTH TECHNOLOGIES",L+16,6);
     doc.setFont("helvetica","normal");doc.setFontSize(7.5);
@@ -843,12 +863,9 @@ async function dlPDF() {
   doc.setFont("helvetica","normal");doc.setFontSize(8);
   doc.text("AI VISIBILITY AND MANAGEMENT REPORT",W-R,11,{align:"right"});
 
-  try {
-    var logoImg = new Image(); logoImg.crossOrigin="anonymous";
-    logoImg.src = "https://www.centernorthtech.com/wp-content/uploads/2026/06/CenterNorth-Technologies-logo-with-tagline.png";
-    await new Promise(function(res,rej){logoImg.onload=res;logoImg.onerror=rej;setTimeout(rej,5000);});
-    doc.addImage(logoImg,"PNG",L,24,90,28);
-  } catch(e) {
+  if (logoB64) {
+    try { doc.addImage(logoB64,"PNG",L,24,90,28); } catch(e) {}
+  } else {
     doc.setFont("helvetica","bold");doc.setFontSize(22);st(INK);
     doc.text("CENTER",L,38);
     st(T);doc.text("NORTH",L+doc.getTextWidth("CENTER"),38);
@@ -1130,13 +1147,10 @@ async function dlPDF() {
   sf(T);doc.rect(L,y+10,CW,6,"F");
   st(WHT);doc.setFont("helvetica","bold");doc.setFontSize(13);
   doc.text("Do not be a ghost in the forest.",L+CW/2,y+12,{align:"center"});
-  if(compassImgEl){try{doc.addImage(compassImgEl,"PNG",L+CW/2-12,y+20,24,24);}catch(e){}}
-  try{
-    var logoImg2=new Image();logoImg2.crossOrigin="anonymous";
-    logoImg2.src="https://www.centernorthtech.com/wp-content/uploads/2026/06/CenterNorth-Technologies-logo-with-tagline.png";
-    await new Promise(function(res,rej){logoImg2.onload=res;logoImg2.onerror=rej;setTimeout(rej,3000);});
-    doc.addImage(logoImg2,"PNG",L+CW/2-36,y+46,72,22);
-  }catch(e){
+  if(compassB64){try{doc.addImage(compassB64,"PNG",L+CW/2-12,y+20,24,24);}catch(e){}}
+  if (logoB64) {
+    try { doc.addImage(logoB64,"PNG",L+CW/2-36,y+46,72,22); } catch(e) {}
+  } else {
     doc.setFont("helvetica","bold");doc.setFontSize(12);st(WHT);
     doc.text("CenterNorth Technologies",L+CW/2,y+54,{align:"center"});
   }
