@@ -1170,96 +1170,90 @@ async function dlPDF() {
   }
   y+=88;
 
-  ph("Next Steps with CenterNorth Technologies");
+  ph("AI Visibility Services — Your Next Step");
   nd(12);
   st(MID);doc.setFont("helvetica","normal");doc.setFontSize(9);
-  doc.text("Start with the free audit. Then choose implementation or ongoing management.",L,y);y+=10;
-  nd(20);
-  sf(LG);doc.roundedRect(L,y,CW,16,2,2,"F");
-  st(T);doc.setFont("helvetica","bold");doc.setFontSize(9);doc.text("FREE AI VISIBILITY AUDIT",L+6,y+7);
-  st(MID);doc.setFont("helvetica","normal");doc.setFontSize(8);doc.text("$0 — always free — AI Visibility Score, 30 checks, PDF report",L+6,y+13);
-  y+=22;
+  doc.text("Start with the free audit. Then choose your path — one-time implementation or monthly management.",L,y);y+=12;
+
+  // Free audit row
+  nd(16);
+  sf(LG);doc.roundedRect(L,y,CW,14,2,2,"F");
+  st(T);doc.setFont("helvetica","bold");doc.setFontSize(9);doc.text("FREE AI VISIBILITY AUDIT",L+6,y+6);
+  st(MID);doc.setFont("helvetica","normal");doc.setFontSize(8);doc.text("$0 — always free — AI Visibility Score, 30 checks, PDF report",L+6,y+11);
+  y+=20;
+
+  // One-time implementation header
   nd(8);
   sf(T);doc.roundedRect(L,y,CW,7,1,1,"F");
   st(WHT);doc.setFont("helvetica","bold");doc.setFontSize(8);
-  doc.text("AI VISIBILITY IMPLEMENTATION — ONE-TIME",L+4,y+4.5);
+  doc.text("PATH A — AI VISIBILITY IMPLEMENTATION — ONE-TIME",L+4,y+4.5);
   y+=11;
+
   var implTiers = [
     {name:"Small Business",price:"$2,500",note:"one-time · up to 25 pages",col:T,features:["llms.txt & robots.txt","Schema.org structured data","FAQ optimization","Sitemap & entity optimization"],best:"Best for: Grade B or C"},
     {name:"Mid-Market",price:"$5,000",note:"one-time · up to 100 pages",col:BLU,features:["Everything in Small Business","Service page optimization","AI citation architecture","AI content rewrite"],best:"Best for: Grade C or D"},
     {name:"Enterprise",price:"$10,000+",note:"custom · unlimited pages",col:[80,40,160],features:["Everything in Mid-Market","Full AI architecture review","Custom schema development","Dedicated account manager"],best:"Best for: Large organizations"}
   ];
   var tw3=(CW-8)/3;
-  nd(72);
+  nd(66);
   for(var iti=0;iti<3;iti++){
     var itm=implTiers[iti];
     var itx=L+iti*(tw3+4);
     var isIRec=(iti===0&&d.suggested_tier==="smallbiz")||(iti===1&&d.suggested_tier==="midmarket")||(iti===2&&d.suggested_tier==="enterprise");
-    sf(isIRec?TL:LG);doc.roundedRect(itx,y,tw3,66,2,2,"F");
-    if(isIRec){sd(T);doc.setLineWidth(0.8);doc.roundedRect(itx,y,tw3,66,2,2,"S");}
-    else{sd(BDR);doc.setLineWidth(0.3);doc.roundedRect(itx,y,tw3,66,2,2,"S");}
+    sf(isIRec?TL:LG);doc.roundedRect(itx,y,tw3,60,2,2,"F");
+    if(isIRec){sd(T);doc.setLineWidth(0.8);doc.roundedRect(itx,y,tw3,60,2,2,"S");}
+    else{sd(BDR);doc.setLineWidth(0.3);doc.roundedRect(itx,y,tw3,60,2,2,"S");}
     st(MID);doc.setFont("helvetica","bold");doc.setFontSize(7);doc.text(itm.name.toUpperCase(),itx+4,y+8);
-    st(itm.col);doc.setFontSize(14);doc.text(itm.price,itx+4,y+18);
-    st(MID);doc.setFontSize(6.5);doc.setFont("helvetica","normal");doc.text(itm.note,itx+4,y+24);
-    sd(BDR);doc.setLineWidth(0.2);doc.line(itx+2,y+27,itx+tw3-2,y+27);
+    st(itm.col);doc.setFontSize(14);doc.text(itm.price,itx+4,y+17);
+    st(MID);doc.setFontSize(6.5);doc.setFont("helvetica","normal");doc.text(itm.note,itx+4,y+23);
+    sd(BDR);doc.setLineWidth(0.2);doc.line(itx+2,y+26,itx+tw3-2,y+26);
     for(var iff=0;iff<itm.features.length;iff++){
-      sf(itm.col);doc.circle(itx+5,y+34+iff*5.5,1.2,"F");
+      sf(itm.col);doc.circle(itx+5,y+32+iff*5.5,1.2,"F");
       st(INK);doc.setFontSize(7.5);
       var feat=doc.splitTextToSize(itm.features[iff],tw3-12);
-      doc.text(feat[0],itx+9,y+35+iff*5.5);
+      doc.text(feat[0],itx+9,y+33+iff*5.5);
     }
-    sd(BDR);doc.setLineWidth(0.2);doc.line(itx+2,y+58,itx+tw3-2,y+58);
+    sd(BDR);doc.setLineWidth(0.2);doc.line(itx+2,y+54,itx+tw3-2,y+54);
     st(INK);doc.setFont("helvetica","bold");doc.setFontSize(7);
-    doc.text(itm.best,itx+4,y+63);
+    doc.text(itm.best,itx+4,y+58);
   }
-  y+=72;
-  nd(24);
-  var isMRec=d.suggested_tier==="management";
-  sf(isMRec?TL:LG);doc.roundedRect(L,y,CW,20,2,2,"F");
-  if(isMRec){sd(T);doc.setLineWidth(0.8);doc.roundedRect(L,y,CW,20,2,2,"S");}
-  sf(T);doc.roundedRect(L,y,4,20,2,2,"F");
-  st(MID);doc.setFont("helvetica","bold");doc.setFontSize(7);doc.text("AI VISIBILITY MANAGEMENT — RECURRING RETAINER",L+7,y+6);
-  st(T);doc.setFontSize(13);doc.text("$997/month",L+7,y+14);
-  st(MID);doc.setFontSize(7);doc.setFont("helvetica","normal");
-  doc.text("Monthly audit · Competitor monitoring · FAQ creation · Citation tracking · Schema updates · AI recommendation tracking",L+55,y+14);
-  y+=26;
+  y+=66;
 
-  // ── PDF: Pillar 3 — Full AI Visibility Management + Agent ──
-  nd(10);
-  sf([80,40,160]);doc.roundedRect(L,y,CW,7,1,1,"F");
+  // PATH B — Monthly plans header
+  nd(8);
+  sf([28,128,40]);doc.roundedRect(L,y,CW,7,1,1,"F");
   st(WHT);doc.setFont("helvetica","bold");doc.setFontSize(8);
-  doc.text("ALL 3 PILLARS — FULL AI VISIBILITY MANAGEMENT™ + AGENT",L+4,y+4.5);
+  doc.text("PATH B — AI VISIBILITY INTELLIGENCE™ — MONTHLY",L+4,y+4.5);
   y+=11;
-  nd(36);
-  sf([245,240,255]);doc.roundedRect(L,y,CW,32,2,2,"F");
-  sd([80,40,160]);doc.setLineWidth(0.8);doc.roundedRect(L,y,CW,32,2,2,"S");
-  sf([80,40,160]);doc.roundedRect(L,y,4,32,2,2,"F");
-  st([80,40,160]);doc.setFont("helvetica","bold");doc.setFontSize(7);
-  doc.text("AI VISIBILITY MANAGEMENT™ + AGENT",L+7,y+7);
-  doc.setFontSize(7);st(MID);doc.setFont("helvetica","normal");
-  doc.text("$1,500 setup fee",L+7,y+12);
-  st([80,40,160]);doc.setFont("helvetica","bold");doc.setFontSize(14);
-  doc.text("$1,297/mo",L+7,y+20);
-  st(MID);doc.setFont("helvetica","normal");doc.setFontSize(6.5);
-  doc.text("12-month commitment",L+7,y+25);
-  var agentFeatsP=["Dedicated AI Visibility Agent™","Identifying relevant discussions","Building authority signals","Citation opportunity monitoring","Brand mention monitoring","Community participation","Content distribution support","Expanding digital visibility"];
-  var afCol=Math.ceil(agentFeatsP.length/2);
-  for(var afpi=0;afpi<agentFeatsP.length;afpi++){
-    var afpx=afpi<afCol?L+CW*0.38:L+CW*0.68;
-    var afpy=y+7+(afpi%afCol)*4;
-    sf([80,40,160]);doc.circle(afpx,afpy-1,1,"F");
-    st(INK);doc.setFontSize(7);doc.setFont("helvetica","normal");
-    doc.text(agentFeatsP[afpi],afpx+3,afpy);
-  }
-  st(INK);doc.setFont("helvetica","bold");doc.setFontSize(7);
-  doc.text("Most Powerful — Deploy an AI-powered workforce",L+7,y+29);
-  y+=38;
 
-  nd(14);
-  sf(TL);doc.roundedRect(L,y,CW,12,2,2,"F");
-  st(DKTEAL);doc.setFont("helvetica","bold");doc.setFontSize(9);
-  doc.text("Ready to get started? Contact CenterNorth Technologies today.",W/2,y+8,{align:"center"});
-  y+=18;
+  var plans=[
+    {name:"GROWTH",price:"$497/mo",col:T,items:["50 prompts daily","All 5 AI platforms","2 competitors tracked","Monthly report","1 brand"]},
+    {name:"PROFESSIONAL — MOST POPULAR",price:"$1,297/mo",col:[80,40,160],items:["250 prompts daily","All 5 AI platforms","5 competitors tracked","Monthly report + trend analysis","Monthly strategy session","1 brand"]},
+    {name:"ENTERPRISE",price:"$2,500+/mo",col:RED,items:["Custom prompt sets","All 5 AI platforms","Custom competitor list","Executive reporting suite","Weekly strategy session","Multiple brands/locations"]}
+  ];
+  var pw=(CW-8)/3;
+  nd(82);
+  for(var pli=0;pli<3;pli++){
+    var plx=L+pli*(pw+4);
+    var pl=plans[pli];
+    sf(pl.name.includes("PROFESSIONAL")?TL:LG);
+    doc.roundedRect(plx,y,pw,76,2,2,"F");
+    if(pl.name.includes("PROFESSIONAL")){sd(pl.col);doc.setLineWidth(0.8);}else{sd(BDR);doc.setLineWidth(0.3);}
+    doc.roundedRect(plx,y,pw,76,2,2,"S");
+    sf(pl.col);doc.roundedRect(plx,y,pw,6,2,2,"F");
+    st(WHT);doc.setFont("helvetica","bold");doc.setFontSize(6.5);
+    doc.text(pl.name,plx+pw/2,y+4.5,{align:"center"});
+    st(pl.col);doc.setFontSize(13);
+    doc.text(pl.price,plx+pw/2,y+16,{align:"center"});
+    sd(BDR);doc.setLineWidth(0.2);doc.line(plx+3,y+19,plx+pw-3,y+19);
+    for(var pii=0;pii<pl.items.length;pii++){
+      sf(pl.col);doc.circle(plx+5,y+26+pii*8,1.2,"F");
+      st(INK);doc.setFont("helvetica","normal");doc.setFontSize(7.5);
+      var pil2=doc.splitTextToSize(pl.items[pii],pw-12);
+      doc.text(pil2[0],plx+9,y+27+pii*8);
+    }
+  }
+  y+=82;
 
   ph("Next Steps with CenterNorth Technologies");
   nd(80);
@@ -1303,7 +1297,7 @@ function logError(type, attempt, url, message) {
   fetch("https://hitmantech-proxy.jmarino.workers.dev/log",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(entry)}).catch(function(){});
 }
 
-var SYS = "IMPORTANT: You must fetch the live current version of every URL you audit. Do not rely on cached or previously known information about any website. Always treat each audit as if you have never seen the site before and fetch fresh content in real time. You are an AI visibility and management expert for CenterNorth Technologies (centernorthtech.com). Cloudflare CEO Matthew Prince stated in 2026 that bot traffic will exceed human traffic by 2027. IBM projects AI agents will generate 60-70% of all internet traffic by 2027. Websites that are not AI-visible become ghosts invisible to the systems making recommendations and purchases on behalf of users. Audit the given URL and return ONLY valid compact JSON with no markdown and no backticks. The JSON structure is: url string, overall_score integer 0-100, checks_passed integer, checks_total 30, critical_issues integer, pages_crawled integer, strengths array of objects with title and desc, weaknesses array of objects with title and desc, llm_readiness object with claude chatgpt gemini perplexity grok each having score integer can_find boolean can_read boolean can_price boolean can_act boolean, categories array, recommendations array, suggested_tier string. Categories must use EXACTLY these 6 ids and max scores: discoverability 20, interpretability 20, structured_data 20, navigation 20, commerce 15, api 5. Category names: LLM Discoverability, Content Interpretability, Structured Data, Agentic Navigation, Commerce Readiness, API Integration. Each category has 5 checks with name status description agent_impact and impact. Status values are pass warn fail or info. IMPORTANT: For the llms.txt check in LLM Discoverability, you MUST attempt to directly fetch the URL: [domain]/llms.txt by constructing the path from the audited URL. For example if auditing https://centernorthtech.com then fetch https://centernorthtech.com/llms.txt directly. If that file exists and returns content, mark the check as pass. Do not rely on search index results for this check - fetch the file path directly. Note in the description that Google Search does not use llms.txt but Claude, ChatGPT, Perplexity and autonomous agents do reference it. Provide exactly 5 strengths and 5 weaknesses. Provide exactly 7 recommendations each with title description agent_benefit and impact. Keep all text fields under 130 characters. suggested_tier is smallbiz if score 70 or above (Grade A or B - recommend AI Visibility Implementation Small Business at $2500 one-time), midmarket if score 35 to 69 (Grade C or D - recommend AI Visibility Implementation Mid-Market at $5000 one-time), management if score below 35 (Grade F - recommend AI Visibility Management retainer at $997/month).";
+var SYS = "IMPORTANT: You must fetch the live current version of every URL you audit. Do not rely on cached or previously known information about any website. Always treat each audit as if you have never seen the site before and fetch fresh content in real time. You are an AI visibility and management expert for CenterNorth Technologies (centernorthtech.com). Cloudflare CEO Matthew Prince stated in 2026 that bot traffic will exceed human traffic by 2027. IBM projects AI agents will generate 60-70% of all internet traffic by 2027. Websites that are not AI-visible become ghosts invisible to the systems making recommendations and purchases on behalf of users. Audit the given URL and return ONLY valid compact JSON with no markdown and no backticks. The JSON structure is: url string, overall_score integer 0-100, checks_passed integer, checks_total 30, critical_issues integer, pages_crawled integer, strengths array of objects with title and desc, weaknesses array of objects with title and desc, llm_readiness object with claude chatgpt gemini perplexity grok each having score integer can_find boolean can_read boolean can_price boolean can_act boolean, categories array, recommendations array, suggested_tier string. Categories must use EXACTLY these 6 ids and max scores: discoverability 20, interpretability 20, structured_data 20, navigation 20, commerce 15, api 5. Category names: LLM Discoverability, Content Interpretability, Structured Data, Agentic Navigation, Commerce Readiness, API Integration. Each category has 5 checks with name status description agent_impact and impact. Status values are pass warn fail or info. IMPORTANT: For the llms.txt check in LLM Discoverability, you MUST attempt to directly fetch the URL: [domain]/llms.txt by constructing the path from the audited URL. For example if auditing https://centernorthtech.com then fetch https://centernorthtech.com/llms.txt directly. If that file exists and returns content, mark the check as pass. Do not rely on search index results for this check - fetch the file path directly. Note in the description that Google Search does not use llms.txt but Claude, ChatGPT, Perplexity and autonomous agents do reference it. Provide exactly 5 strengths and 5 weaknesses. Provide exactly 7 recommendations each with title description agent_benefit and impact. Keep all text fields under 130 characters. suggested_tier is smallbiz if score 70 or above (Grade A or B - recommend AI Visibility Implementation Small Business at $2500 one-time), midmarket if score 35 to 69 (Grade C or D - recommend AI Visibility Implementation Mid-Market at $5000 one-time), management if score below 35 (Grade F - recommend AI Visibility Management monthly plan starting at $497/month).";
 
 function submitLeadGate() {
   var name = document.getElementById("lg-name").value.trim();
