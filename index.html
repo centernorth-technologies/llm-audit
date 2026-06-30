@@ -782,7 +782,7 @@ async function dlPDF() {
         } catch(e) { resolve(null); }
       };
       img.onerror = function() { resolve(null); };
-      setTimeout(function() { resolve(null); }, 8000);
+      setTimeout(function() { resolve(null); }, 12000);
       img.src = src;
     });
   }
@@ -793,6 +793,10 @@ async function dlPDF() {
 
   var logoResult = await loadImgAsBase64("https://www.centernorthtech.com/wp-content/uploads/2026/06/CenterNorth-Technologies-logo-with-tagline.png");
   var logoB64 = logoResult ? logoResult.b64 : null;
+
+  var dashResult = await loadImgAsBase64("https://www.centernorthtech.com/wp-content/uploads/2026/06/Dashboard-2.0.png");
+  var dashB64 = dashResult ? dashResult.b64 : null;
+  var dashImgEl = dashResult ? dashResult.el : null;
 
   function ph(title){
     np();
@@ -1145,18 +1149,22 @@ async function dlPDF() {
   y+=14;
 
   nd(140);
-  try {
-    var dashImgEl = new Image(); dashImgEl.crossOrigin="anonymous";
-    dashImgEl.src = "https://www.centernorthtech.com/wp-content/uploads/2026/06/Dashboard-2.0.png";
-    await new Promise(function(res,rej){dashImgEl.onload=res;dashImgEl.onerror=rej;setTimeout(rej,6000);});
-    var dashAspect = dashImgEl.naturalHeight / dashImgEl.naturalWidth;
-    var dashW = CW;
-    var dashH = Math.min(dashW * dashAspect, 150);
-    var dashDrawW = dashH / dashAspect;
-    sd(BDR);doc.setLineWidth(0.4);doc.roundedRect(L,y,dashDrawW,dashH,2,2,"S");
-    doc.addImage(dashImgEl,"PNG",L,y,dashDrawW,dashH);
-    y += dashH + 8;
-  } catch(e) {
+  if (dashB64 && dashImgEl) {
+    try {
+      var dashAspect = dashImgEl.naturalHeight / dashImgEl.naturalWidth;
+      var dashW = CW;
+      var dashH = Math.min(dashW * dashAspect, 150);
+      var dashDrawW = dashH / dashAspect;
+      sd(BDR);doc.setLineWidth(0.4);doc.roundedRect(L,y,dashDrawW,dashH,2,2,"S");
+      doc.addImage(dashB64,"PNG",L,y,dashDrawW,dashH);
+      y += dashH + 8;
+    } catch(e) {
+      sf(LG);doc.roundedRect(L,y,CW,40,2,2,"F");
+      st(MID);doc.setFont("helvetica","italic");doc.setFontSize(8);
+      doc.text("Dashboard preview unavailable — view online at centernorthtech.com",L+CW/2,y+22,{align:"center"});
+      y+=46;
+    }
+  } else {
     sf(LG);doc.roundedRect(L,y,CW,40,2,2,"F");
     st(MID);doc.setFont("helvetica","italic");doc.setFontSize(8);
     doc.text("Dashboard preview unavailable — view online at centernorthtech.com",L+CW/2,y+22,{align:"center"});
