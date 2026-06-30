@@ -647,7 +647,7 @@ function showResults(d) {
   html += "<div style='font-size:20px;font-weight:800;color:#fff;margin-bottom:6px'>Your Monthly AI Visibility Executive Dashboard</div>";
   html += "<div style='font-size:13px;color:#8fa8a4;line-height:1.75;margin-bottom:20px'>This is the report your team opens every month. Not a PDF nobody reads. A live intelligence dashboard showing exactly where you stand, what moved, and what to do next.</div>";
   html += "<div style='border-radius:10px;overflow:hidden;border:1px solid rgba(28,128,40,.3);margin-bottom:16px'>";
-  html += "<img src='https://www.centernorthtech.com/wp-content/uploads/2026/06/Dashboard-2.0.png' alt='CenterNorth AI Visibility Dashboard — Monthly Executive Report' style='width:100%;height:auto;display:block;'>";
+  html += "<img src='dashboard-preview.png' alt='CenterNorth AI Visibility Dashboard — Monthly Executive Report' style='width:100%;height:auto;display:block;'>";
   html += "</div>";
   html += "<div style='display:grid;grid-template-columns:repeat(4,1fr);gap:10px'>";
   var dashHighlights = [
@@ -819,10 +819,10 @@ async function dlPDF() {
   var logoResult = await loadImgAsBase64("https://www.centernorthtech.com/wp-content/uploads/2026/06/CenterNorth-Technologies-logo-with-tagline.png");
   var logoB64 = logoResult ? logoResult.b64 : null;
 
-  var dashResult = await loadImgAsBase64("https://www.centernorthtech.com/wp-content/uploads/2026/06/Dashboard-2.0.png");
+  var dashResult = await loadImgAsBase64("dashboard-preview.png");
   if (!dashResult) {
     console.warn("[PDF Image] Primary method failed for dashboard, trying fetch fallback...");
-    dashResult = await loadImgAsBase64ViaFetch("https://www.centernorthtech.com/wp-content/uploads/2026/06/Dashboard-2.0.png");
+    dashResult = await loadImgAsBase64ViaFetch("dashboard-preview.png");
   }
   var dashB64 = dashResult ? dashResult.b64 : null;
   var dashImgEl = dashResult ? dashResult.el : null;
