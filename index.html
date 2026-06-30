@@ -1136,6 +1136,54 @@ async function dlPDF() {
   doc.text("Most are still writing blog posts hoping Google notices. We're tracking AI at scale.",L+4,y+10);
   y+=18;
 
+  // ── PDF: Monthly Dashboard Preview ──
+  ph("Your Monthly AI Visibility Executive Dashboard");
+  nd(14);
+  st(MID);doc.setFont("helvetica","normal");doc.setFontSize(9);
+  var dashIntro=doc.splitTextToSize("This is the report your team opens every month. Not a PDF nobody reads. A live intelligence dashboard showing exactly where you stand, what moved, and what to do next.",CW);
+  for(var dii=0;dii<Math.min(dashIntro.length,2);dii++){doc.text(dashIntro[dii],L,y+dii*5);}
+  y+=14;
+
+  nd(140);
+  try {
+    var dashImgEl = new Image(); dashImgEl.crossOrigin="anonymous";
+    dashImgEl.src = "https://www.centernorthtech.com/wp-content/uploads/2026/06/Dashboard-2.0.png";
+    await new Promise(function(res,rej){dashImgEl.onload=res;dashImgEl.onerror=rej;setTimeout(rej,6000);});
+    var dashAspect = dashImgEl.naturalHeight / dashImgEl.naturalWidth;
+    var dashW = CW;
+    var dashH = Math.min(dashW * dashAspect, 150);
+    var dashDrawW = dashH / dashAspect;
+    sd(BDR);doc.setLineWidth(0.4);doc.roundedRect(L,y,dashDrawW,dashH,2,2,"S");
+    doc.addImage(dashImgEl,"PNG",L,y,dashDrawW,dashH);
+    y += dashH + 8;
+  } catch(e) {
+    sf(LG);doc.roundedRect(L,y,CW,40,2,2,"F");
+    st(MID);doc.setFont("helvetica","italic");doc.setFontSize(8);
+    doc.text("Dashboard preview unavailable — view online at centernorthtech.com",L+CW/2,y+22,{align:"center"});
+    y+=46;
+  }
+
+  var dashHighlightsP=[
+    ["Recommendation Share™","How often AI recommends you vs competitors"],
+    ["Competitor Rank","Your position across every tracked prompt"],
+    ["Prompt Tracking™","Which exact questions trigger AI recommendations"],
+    ["AI Timeline","Day-by-day recommendation share trending"]
+  ];
+  nd(26);
+  var dhw=(CW-12)/4;
+  for(var dhpi=0;dhpi<4;dhpi++){
+    var dhx=L+dhpi*(dhw+4);
+    sf(LG);doc.roundedRect(dhx,y,dhw,24,2,2,"F");
+    sf(T);doc.roundedRect(dhx,y,dhw,3,2,2,"F");
+    st(INK);doc.setFont("helvetica","bold");doc.setFontSize(7);
+    var dhtl=doc.splitTextToSize(dashHighlightsP[dhpi][0],dhw-6);
+    doc.text(dhtl[0],dhx+4,y+9);
+    st(MID);doc.setFont("helvetica","normal");doc.setFontSize(6.5);
+    var dhdl=doc.splitTextToSize(dashHighlightsP[dhpi][1],dhw-6);
+    for(var dhdli=0;dhdli<Math.min(dhdl.length,2);dhdli++){doc.text(dhdl[dhdli],dhx+4,y+14+dhdli*3.5);}
+  }
+  y+=30;
+
   ph("AI Visibility Intelligence — Choose Your Plan");
   nd(10);
   st(MID);doc.setFont("helvetica","normal");doc.setFontSize(9);
