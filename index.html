@@ -779,12 +779,37 @@ async function dlPDF() {
           var ctx = canvas.getContext("2d");
           ctx.drawImage(img, 0, 0);
           resolve({ el: img, b64: canvas.toDataURL("image/png") });
-        } catch(e) { resolve(null); }
+        } catch(e) { console.warn("[PDF Image] Canvas conversion failed for " + src + ":", e.message); resolve(null); }
       };
-      img.onerror = function() { resolve(null); };
-      setTimeout(function() { resolve(null); }, 12000);
+      img.onerror = function(e) { console.warn("[PDF Image] Failed to load " + src); resolve(null); };
+      setTimeout(function() { console.warn("[PDF Image] Timed out loading " + src); resolve(null); }, 15000);
       img.src = src;
     });
+  }
+
+  // Fallback: fetch as blob and convert via FileReader (works around some canvas/CORS edge cases for larger images)
+  async function loadImgAsBase64ViaFetch(src) {
+    try {
+      var resp = await fetch(src, {mode: "cors"});
+      if (!resp.ok) { throw new Error("HTTP " + resp.status); }
+      var blob = await resp.blob();
+      var b64 = await new Promise(function(resolve, reject) {
+        var reader = new FileReader();
+        reader.onloadend = function() { resolve(reader.result); };
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+      var img = new Image();
+      await new Promise(function(resolve, reject) {
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = b64;
+      });
+      return { el: img, b64: b64 };
+    } catch(e) {
+      console.warn("[PDF Image] Fetch fallback failed for " + src + ":", e.message);
+      return null;
+    }
   }
 
   var compassResult = await loadImgAsBase64("https://www.centernorthtech.com/wp-content/uploads/2026/06/CenterNorth-Tech-Compas-logo.png");
@@ -795,8 +820,14 @@ async function dlPDF() {
   var logoB64 = logoResult ? logoResult.b64 : null;
 
   var dashResult = await loadImgAsBase64("https://www.centernorthtech.com/wp-content/uploads/2026/06/Dashboard-2.0.png");
+  if (!dashResult) {
+    console.warn("[PDF Image] Primary method failed for dashboard, trying fetch fallback...");
+    dashResult = await loadImgAsBase64ViaFetch("https://www.centernorthtech.com/wp-content/uploads/2026/06/Dashboard-2.0.png");
+  }
   var dashB64 = dashResult ? dashResult.b64 : null;
   var dashImgEl = dashResult ? dashResult.el : null;
+  if (dashB64) { console.log("[PDF Image] Dashboard loaded successfully"); }
+  else { console.warn("[PDF Image] Dashboard failed via both methods — will show fallback text in PDF"); }
 
   function ph(title){
     np();
@@ -1318,12 +1349,11 @@ async function dlPDF() {
   sf(T);doc.rect(L,y+10,CW,6,"F");
   st(WHT);doc.setFont("helvetica","bold");doc.setFontSize(13);
   doc.text("Do not be a ghost in the forest.",L+CW/2,y+12,{align:"center"});
-  if(compassB64){try{doc.addImage(compassB64,"PNG",L+CW/2-12,y+20,24,24);}catch(e){}}
   if (logoB64) {
-    try { doc.addImage(logoB64,"PNG",L+CW/2-36,y+46,72,22); } catch(e) {}
+    try { doc.addImage(logoB64,"PNG",L+CW/2-42,y+24,84,26); } catch(e) {}
   } else {
     doc.setFont("helvetica","bold");doc.setFontSize(12);st(WHT);
-    doc.text("CenterNorth Technologies",L+CW/2,y+54,{align:"center"});
+    doc.text("CenterNorth Technologies",L+CW/2,y+38,{align:"center"});
   }
   doc.setFont("helvetica","normal");doc.setFontSize(8);st(PAL);
   doc.text("Making businesses visible, readable, and actionable to every major AI agent and LLM.",L+CW/2,y+70,{align:"center"});
